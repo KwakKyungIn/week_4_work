@@ -1,10 +1,11 @@
 import { Router } from "express";
 import posts from "./posts";
-import post from "./post";
+import auth from "./auth";
+
 
 const router = Router();
 
 router.use("/posts", posts);
-router.use("/post", post);
+router.use("/auth", auth);
 
 export default router;
