@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const router = Router();
 
-let nextId = 1; // movies 변수에 id를 설정합니다
+let nextId = 1; 
 
 let users = [ ];
 

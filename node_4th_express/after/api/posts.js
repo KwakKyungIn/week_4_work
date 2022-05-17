@@ -2,43 +2,36 @@ import { Router } from "express";
 
 const router = Router();
 
-let nextPostId = 4; // movies 변수에 id를 설정합니다
-let nextWriterId = 4;
 
-let movies = [ // movies 배열
-  { // movies[0]
+
+let movies = [ 
+  { 
     id: 1,
     title: 'Avengers',
     writer : 1,
   },
-  { // movies [1]
+  { 
     id: 2,
     title: 'Spider-man',
     writer : 2,
   },
-  { // movies [2]
+  { 
     id: 3,
     title: 'Harry Potter',
     writer : 3,
   },
 ];
 
-//posts 주소로 GET 요청을 받았을 때, 전체 글 목록을 조회하도록 한다
+//전체 글 조회하게 만들기
 router.get("/", (req, res) => {
     res.json(movies);
   });
 
-//posts 주소로 POST 요청을 받았을 때, 글을 생성하게 한다. (Done)
+//포스트 요청을 받았을 때, 아이디 받고 추가하게 만들기
 router.post("/", (req, res) => {
-    // movies.push({
-    //     id: nextPostId++, 
-    //     title: req.body.title, 
-    //     writer : nextWriterId++,
-    //   });
 
-    //   res.json(movies.filter(movie => movie.id === req.body.id)[0]);
 
-  const id = req.header("X-User-Id"); // userID
+  const id = req.header("X-User-Id"); 
   const { title } = req.body;
   const postCount = movies.push({
     id: nextId++,
@@ -59,34 +52,14 @@ router.post("/", (req, res) => {
 
 
 
-//posts 주소로 PUT 요청을 받았을 때, 특정 글을 수정하도록 한다 (Done)
+//풋 요청을 받았을 떄, 아이디 받고 포스트 아이디 아이디로 변환해서 수정하게 하기
 router.put("/:postId", (req, res) => {
-    // const index = movies.findIndex(movie => movie.id === req.body.postId);
-    // if (index === -1) { // 해당 영화가 없을시
-    //   return res.json({
-    //     error: "That movie does not exist",
-    //   });
-    // }
-
-    // //자신의 글인지 확인하는 부분, id 입력 받고 배열에서 id로 writer 찾고 비교
-    // const indexUserId = movies.findIndex(movie => movie.id === req.body.userIdwriter);
-    // let asdasd = Object.values(movies[index])
-    // if (indexUserId === asdasd) { // 자신의 글이 아닐경우
-    //   return res.json({
-    //     error: "Cannot modify post",
-    //   });
-    // }
-    // movies[index] = {
-    //   id: req.body.id,
-    //   title: req.body.title,
-    //   writer : req.body.writer,
-    // };
-    // res.json(movies);
+ 
 
   const userId = req.header("X-User-Id");
   const { postId } = req.params;
   const { title } = req.body;
-  const index = movies.findIndex((post) => post.id === postId-0);
+  const index = movies.findIndex((post) => post.id === postId-0);  // 왜 -0을 안하면 실행이 안되는지는 모르겠는데 -0을 붙여야 실행되네요ㅠ 그래서 아래도 다 -0이 붙어있어요
 
   if (index === -1) {
     return res.json({
@@ -111,24 +84,10 @@ router.put("/:postId", (req, res) => {
 
 });
 
+//삭제 요청 받은거~
 
-//posts 주소로 DELETE 요청을 받았을 때, 특정 글을 삭제하도록 한다.
 router.delete("/:postId", (req, res) => {
-  //자신의 글인지 확인하는 부분, id 입력 받고 배열에서 id로 writer 찾고 비교
-  // const indexUserId = movies.findIndex(movie => movie.id === req.body.uesrId);
-  // const index = movies.findIndex(movie => movie.id === req.body.postId);  
-  // let asdasd = Object.values(movies[index])
-  //   if (indexUserId === asdasd) { // 자신의 글이 아닐경우
-  //     return res.json({
-  //       error: "Cannot delete post",
-  //     });
-  //   }
-  
-  //   movies = movies.filter(movie => movie.id !== req.body.id);
 
-  //   res.json({
-  //     data : "Successfully deleted"
-  //   })
   const userId = req.header("X-User-Id");
   const { postId } = req.params;
   
@@ -153,7 +112,7 @@ router.delete("/:postId", (req, res) => {
 
   });
 
-//특정 글 조회 (해결)
+// 특정한 부분 추출! post 부분에서 수정해서 가져옴
   router.get("/:postId", (req, res) => {
      const { postId } = req.params;
     const index = movies.findIndex((post) => post.id === postId-0 );
