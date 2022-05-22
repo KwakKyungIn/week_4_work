@@ -67,7 +67,7 @@ router.put("/:postId", (req, res) => {
     });
   }
 
-  if (!(movies[index].writer === userId)) {
+  if (!(movies[index].writer === userId-0)) {
     return res.json({
       error: "Cannot modify post",
     });
