@@ -56,51 +56,40 @@ router.put("/:postId", async(req, res) => {
   const userId = req.header("X-User-Id");
   const { postId } = req.params;
   const { content } = req.body;
-
-  await Post.update({
-    content : content,}
-    ,{
-      where : {
-        writer : userId,
-        id : postId,
-      }
-    });
-
-    const postDatas = await Post.findAll({ 
-      attributes: ['id'],
-      where:{
-        content : content,
-      }
-     });
-
-    res.json({
-      data: postDatas}
-      )
-
-
-        // const index = movies.findIndex((post) => post.id === postId-0); 
-
-  // if (index === -1) {
-  //   return res.json({
-  //     error: "That post does not exist",
-  //   });
-  // }
-
-  // if (!(movies[index].writer === userId-0)) {
-  //   return res.json({
-  //     error: "Cannot modify post",
-  //   });
-  // }
-
-  // movies[index].title = title;
-
-  // return res.json({
-  //   data: {
-  //     id: movies[index].id,
-  //   },
-  // });
-
-
+if(await Post.findOne({where :{writer : userId}}))
+{
+  if(await Post.findOne({where :{id : postId}}))
+  {
+    await Post.update({
+      content : content,}
+      ,{
+        where : {
+          writer : userId,
+          id : postId,
+        }
+      });
+  
+      const postDatas = await Post.findAll({ 
+        attributes: ['id'],
+        where:{
+          content : content,
+        }
+       });
+  
+      res.json({
+        data: postDatas}
+        )
+  }
+  res.json({
+    data: "Cannot modify post. Wrong postId",
+  });  
+}
+else
+{
+  res.json({
+    data: "Cannot modify post. Wrong X-User-Id",
+  });
+}
   });
 
 //삭제 요청 받은거~
@@ -109,38 +98,59 @@ router.delete("/:postId", async(req, res) => {
 
   const userId = req.header("X-User-Id");
   const { postId } = req.params;
-  // console.log(await Post.findOne({where :{id:postId},attributes: ['id'], raw : true}))
-  if(postId != await Post.findOne({where :{id:postId},attributes: ['id'], raw : true}))
+  console.log(await Post.findOne({where :{writer : userId}}))
+
+  if(await Post.findOne({where :{writer : userId}}))
    {
-    return res.json({
-          error: "Cannot delete post",
-         });
-  }
-
-  Post.destroy({
-    where : {
-      writer : userId,
-      id : postId,
-    }
-  });
-
+    if(await Post.findOne({where :{id : postId}}))
+    {
+      Post.destroy({
+      where : {
+        writer : userId,
+        id : postId,
+      }
+    });
     res.json({
-         data: "Successfully deleted",
-       });
+      data: "Successfully deleted",
+    });
+  }
+  else{
+    return res.json({
+      error: "Post is not exist",
+     });
+  }
+  }
+  else{
+    return res.json({
+      error: "Not your post. Cannot delete post",
+     });
+  }
+  
 
   });
 
 // 특정한 부분 추출! post 부분에서 수정해서 가져옴
   router.get("/:postId",async(req, res) => {
     const { postId } = req.params;
-    const postDatas = await Post.findAll({ 
-      where:{
-        id : postId
-      }
-     });
-    res.json({
-      data: postDatas}
-      )
+  
+    if(await Post.findOne({where :{id : postId}}))
+    {
+      const postDatas = await Post.findAll({ 
+        where:{
+          id : postId
+        }
+       });
+      res.json({
+        data: postDatas}
+        )
+    }
+    else
+    {
+      res.json({
+        data: "Post is not exist",
+      });
+    }
+    
   });
 
 export default router;
