@@ -34,7 +34,11 @@ authRouter.post("/", (req, res) => {
         number : number,
     });
 
-    return res.Student.fialdAll({});
+    const studentDatas = Student.findAll({});
+    req.json({
+      data : studentDatas
+    })
+    
     
 });
 
