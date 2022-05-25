@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
-const Student = require('./student');
+const Post = require('./post');
+const Auth = require('./auth');
 
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
@@ -14,8 +15,12 @@ const sequelize = new Sequelize( //config의 db정보와 연결
 
 db.sequelize = sequelize;
 
-db.Student = Student;
-Student.init(sequelize);
-Student.associate(db);
+db.Post = Post;
+Post.init(sequelize);
+Post.associate(db);
+
+db.Auth = Auth;
+Auth.init(sequelize);
+Auth.associate(db);
 
 module.exports = db;

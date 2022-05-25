@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Student extends Sequelize.Model{
+module.exports = class Post extends Sequelize.Model{
     static init(sequelize){
         return super.init({
-            name : {
+            content : {
                 type : Sequelize.STRING(5)
             },
-            number : {
+            writer : {
                 type : Sequelize.INTEGER(10)
             },						
 
@@ -14,8 +14,8 @@ module.exports = class Student extends Sequelize.Model{
          {
             sequelize,
             timestamps: false,
-            modelName: 'student',
-            tableName: 'students',
+            modelName: 'post',
+            tableName: 'posts',
             paranoid: false,
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci',

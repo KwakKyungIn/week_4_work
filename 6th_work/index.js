@@ -7,7 +7,7 @@ const port = 3000;
 const { sequelize } = require("./models");
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("데이터베이스 연결 성공");
   })
