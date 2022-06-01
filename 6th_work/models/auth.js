@@ -7,7 +7,7 @@ module.exports = class Auth extends Sequelize.Model{
                 type : Sequelize.STRING(20)
             },
             password : {
-                type : Sequelize.STRING(10)
+                type : Sequelize.STRING(20)
             },						
 
 		},

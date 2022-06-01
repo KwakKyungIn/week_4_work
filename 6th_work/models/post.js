@@ -4,10 +4,10 @@ module.exports = class Post extends Sequelize.Model{
     static init(sequelize){
         return super.init({
             content : {
-                type : Sequelize.STRING(5)
+                type : Sequelize.STRING(20)
             },
             writer : {
-                type : Sequelize.INTEGER(10)
+                type : Sequelize.INTEGER(20)
             },						
 
 		},
