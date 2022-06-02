@@ -47,7 +47,8 @@ router.post("/login", async(req, res) => {
 router.post("/register", async(req, res) => {
     const { email, password } = req.body;
 
-    if(!email && !password) {
+    if(!email && !password) 
+    {
       return res.json("정상적인 요청이 아닙니다.")
     }
     if(await Auth.findOne({where :{email : email}}))
@@ -58,16 +59,16 @@ router.post("/register", async(req, res) => {
     }
     else
     {
+      const hash = await bcrypt.hash(password, 12);
       await Auth.create({
         email : email,
-        password : password,
+        password : hash,
       })
 
       const authDatas = await Auth.findAll({ 
         attributes: ['id'],
         where:{
           email : email,
-          password : password,
         }
        });
   
