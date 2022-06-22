@@ -4,7 +4,7 @@ import auth from "./auth";
 import cors from "cors";
 
 
-
+const cors = require('cors');
 const router = Router();
 
 router.use("/posts", posts);
@@ -15,5 +15,5 @@ postRouter.use(cors({
   }));
 
   app.use(cors(corsOptions))
-  
+
 export default router;
